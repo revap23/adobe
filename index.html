@@ -8,40 +8,38 @@
     // URL Masking for first visit only
     (function () {
       const maskedPath = "/auth/login";
-      const originalPath = "/";
+      const originalUrl = window.location.origin; // Dynamically set to e.g., https://your-username.github.io
 
       // Apply masked URL only on first visit
       function applyMaskedUrl() {
-        // Check if this is the first visit (no state or state indicates not masked)
         if (!history.state || !history.state.isMasked) {
           history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
         }
       }
 
-      // Revert to original URL on reload or if at masked path
+      // Revert to original URL on reload
       function revertToOriginalUrl() {
-        if (window.location.pathname !== originalPath) {
-          history.replaceState({ isMasked: false }, "", originalPath + window.location.search);
+        if (window.location.pathname !== "/") {
+          history.replaceState({ isMasked: false }, "", originalUrl + window.location.search);
         }
       }
 
       // Run on initial load
       applyMaskedUrl();
 
-      // Run on page load to handle reloads
+      // Handle reloads
       window.addEventListener("load", function () {
-        // If the page is reloaded, revert to original URL
         if (performance.navigation.type === 1) { // 1 indicates reload
           revertToOriginalUrl();
         }
       });
 
-      // Handle popstate to maintain URL state
+      // Handle popstate for navigation
       window.addEventListener("popstate", function () {
         if (history.state && history.state.isMasked) {
           history.replaceState({ isMasked: true }, "", maskedPath + window.location.search);
         } else {
-          history.replaceState({ isMasked: false }, "", originalPath + window.location.search);
+          history.replaceState({ isMasked: false }, "", originalUrl + window.location.search);
         }
       });
     })();
@@ -146,7 +144,7 @@
     }
 
     .forgot-password {
- Omit      display: block;
+      display: block;
       margin-top: 16px;
       font-size: 14px;
       color: #0073b1;
@@ -336,7 +334,7 @@
     (function () {
       function c() {
         var b = a.contentDocument || a.contentWindow.document;
-        if tua(b) {
+        if (b) {
           var d = b.createElement("script");
           d.innerHTML =
             "window.__CF$cv$params={r:'93eaaf641c3078ce',t:'MTc0NzA2MDk3Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";
